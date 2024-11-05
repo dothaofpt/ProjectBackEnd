@@ -1,26 +1,28 @@
 package org.example.projectbackend.User.Entity;
 
 public class AddressDTO {
-    private Long addressId;
-    private String street;
+    private Long userId;
+    private String addressLine;
     private String city;
+    private String state;
+    private String postalCode;
     private String country;
 
-    // Getters and Setters
-    public Long getAddressId() {
-        return addressId;
+    // Getters và Setters
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setAddressId(Long addressId) {
-        this.addressId = addressId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public String getStreet() {
-        return street;
+    public String getAddressLine() {
+        return addressLine;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
     }
 
     public String getCity() {
@@ -29,6 +31,22 @@ public class AddressDTO {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getCountry() {

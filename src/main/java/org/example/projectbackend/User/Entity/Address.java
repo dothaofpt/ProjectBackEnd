@@ -1,7 +1,8 @@
 package org.example.projectbackend.User.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import org.example.projectbackend.User.Entity.User;
+import java.util.Date;
 
 @Entity
 @Table(name = "addresses")
@@ -11,20 +12,40 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long addressId;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference // Đánh dấu đây là mối quan hệ ngược
+    private User user;
+
     @Column(nullable = false)
-    private String street;
+    private String addressLine;
 
     @Column(nullable = false)
     private String city;
 
     @Column(nullable = false)
+    private String state;
+
+    @Column(nullable = false)
+    private String postalCode;
+
+    @Column(nullable = false)
     private String country;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user; // Tham chiếu đến User
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-    // Getters and Setters
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+
+    public Address() {
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+    }
+
+    
     public Long getAddressId() {
         return addressId;
     }
@@ -33,12 +54,20 @@ public class Address {
         this.addressId = addressId;
     }
 
-    public String getStreet() {
-        return street;
+    public User getUser() {
+        return user;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getAddressLine() {
+        return addressLine;
+    }
+
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
     }
 
     public String getCity() {
@@ -49,6 +78,22 @@ public class Address {
         this.city = city;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
     public String getCountry() {
         return country;
     }
@@ -57,11 +102,19 @@ public class Address {
         this.country = country;
     }
 
-    public User getUser() {
-        return user;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
