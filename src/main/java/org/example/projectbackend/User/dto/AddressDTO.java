@@ -1,4 +1,4 @@
-package org.example.projectbackend.User.Entity;
+package org.example.projectbackend.User.dto;
 
 public class AddressDTO {
     private Long userId;

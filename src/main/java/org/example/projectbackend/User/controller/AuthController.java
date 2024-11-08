@@ -1,17 +1,11 @@
-package org.example.projectbackend.User.Controller;
+package org.example.projectbackend.User.controller;
 
-import org.example.projectbackend.User.Entity.User;
-import org.example.projectbackend.User.Entity.UserDTO;
-import org.example.projectbackend.User.Security.JwtUtil;
-import org.example.projectbackend.User.Service.UserService;
+import org.example.projectbackend.User.dto.UserDTO;
+import org.example.projectbackend.User.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -21,28 +15,35 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
-
+    // Đăng ký người dùng
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> registerUser(@RequestBody UserDTO userDTO) {
-        User user = userService.registerUser(userDTO);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "User registered successfully");
-        response.put("userId", user.getUserId());
-
+        Map<String, Object> response = userService.registerUser(userDTO);
+        if (response.containsKey("message") && response.get("message").equals("Username already exists")) {
+            return ResponseEntity.status(400).body(response);  // Trả về lỗi nếu tên người dùng đã tồn tại
+        }
         return ResponseEntity.ok(response);
     }
 
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<String> authenticateUser(@RequestBody UserDTO userDTO) {
-        User user = userService.findByUsername(userDTO.getUsername()).orElse(null);
-        if (user != null && user.getPassword().equals(userDTO.getPassword())) {
-            String token = jwtUtil.generateToken(user.getUsername());
-            return ResponseEntity.ok("JWT Token: " + token);
+    // Đăng nhập người dùng
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> loginUser(@RequestBody UserDTO userDTO) {
+        Map<String, String> response = userService.loginUser(userDTO);
+
+        if (response.containsKey("message") && response.get("message").equals("Invalid username or password")) {
+            return ResponseEntity.status(401).body(response);  // Trả về lỗi 401 khi thông tin đăng nhập không đúng
         }
-        return ResponseEntity.status(401).body("Invalid username or password");
+
+        if (response.containsKey("message") && response.get("message").equals("User not found")) {
+            return ResponseEntity.status(404).body(response);  // Trả về lỗi 404 khi người dùng không tồn tại
+        }
+
+        // Trả về thông báo thành công cùng với token trong message
+        return ResponseEntity.ok(response);
     }
+
+
+
+
 }

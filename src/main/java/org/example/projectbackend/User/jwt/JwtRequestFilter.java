@@ -1,4 +1,4 @@
-package org.example.projectbackend.User.Security;
+package org.example.projectbackend.User.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,7 +30,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String requestPath = request.getRequestURI();
 
-        if (requestPath.equals("/auth/register") || requestPath.equals("/auth/authenticate")) {
+        if (requestPath.equals("/auth/register") || requestPath.equals("/auth/login")) {
             chain.doFilter(request, response);
             return;
         }

@@ -1,7 +1,6 @@
-package org.example.projectbackend.User.Repository;
+package org.example.projectbackend.User.repository;
 
-import org.example.projectbackend.User.Entity.Address;
-import org.example.projectbackend.User.Entity.User;
+import org.example.projectbackend.User.entity.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

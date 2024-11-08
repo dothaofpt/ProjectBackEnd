@@ -1,4 +1,4 @@
-package org.example.projectbackend.User.Security;
+package org.example.projectbackend.User.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -27,6 +27,7 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
+
 
     public Boolean validateToken(String token, String username) {
         final String extractedUsername = extractUsername(token);

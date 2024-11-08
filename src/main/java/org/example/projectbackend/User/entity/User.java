@@ -1,4 +1,4 @@
-package org.example.projectbackend.User.Entity;
+package org.example.projectbackend.User.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
