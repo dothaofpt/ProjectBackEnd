@@ -1,6 +1,5 @@
 package org.example.projectbackend.User.Security;
 
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,10 +28,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
-        // Lấy URL của yêu cầu hiện tại
         String requestPath = request.getRequestURI();
 
-        
         if (requestPath.equals("/auth/register") || requestPath.equals("/auth/authenticate")) {
             chain.doFilter(request, response);
             return;
@@ -51,7 +48,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             if (jwtUtil.validateToken(jwt, userDetails.getUsername())) {
-                // Nếu JWT hợp lệ, thiết lập xác thực cho user
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -59,8 +55,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }
 
-   
         chain.doFilter(request, response);
     }
-
 }

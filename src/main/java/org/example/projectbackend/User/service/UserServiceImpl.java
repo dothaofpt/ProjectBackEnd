@@ -1,9 +1,9 @@
-package org.example.projectbackend.User.Service;
+package org.example.projectbackend.User.service;
 
-import org.example.projectbackend.User.Entity.User;
-import org.example.projectbackend.User.Entity.UserDTO;
-import org.example.projectbackend.User.Entity.UserRole;
-import org.example.projectbackend.User.Repository.UserRepository;
+import org.example.projectbackend.User.entity.User;
+import org.example.projectbackend.User.dto.UserDTO;
+import org.example.projectbackend.User.entity.UserRole;
+import org.example.projectbackend.User.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserServiceIml {
 
     @Autowired
     private UserRepository userRepository;
@@ -19,7 +19,7 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceIml(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -28,7 +28,7 @@ public class UserService {
         user.setUsername(userDTO.getUsername());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword())); // Mã hóa mật khẩu
         user.setEmail(userDTO.getEmail());
-        user.setRole(UserRole.CUSTOMER); // Hoặc thiết lập vai trò mặc định khác
+        user.setRole(UserRole.CUSTOMER); // Vai trò mặc định là CUSTOMER
         return userRepository.save(user);
     }
 
@@ -36,3 +36,4 @@ public class UserService {
         return Optional.ofNullable(userRepository.findByUsername(username));
     }
 }
+
