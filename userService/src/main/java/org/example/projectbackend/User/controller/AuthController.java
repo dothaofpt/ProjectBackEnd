@@ -15,35 +15,30 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    // Đăng ký người dùng
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> registerUser(@RequestBody UserDTO userDTO) {
         Map<String, Object> response = userService.registerUser(userDTO);
         if (response.containsKey("message") && response.get("message").equals("Username already exists")) {
-            return ResponseEntity.status(400).body(response);  // Trả về lỗi nếu tên người dùng đã tồn tại
+            return ResponseEntity.status(400).body(response);
+        }
+        if (response.containsKey("message") && response.get("message").equals("Only one ADMIN allowed")) {
+            return ResponseEntity.status(403).body(response); // Trả về lỗi khi vượt quá giới hạn ADMIN
         }
         return ResponseEntity.ok(response);
     }
 
-
-    // Đăng nhập người dùng
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody UserDTO userDTO) {
         Map<String, String> response = userService.loginUser(userDTO);
 
         if (response.containsKey("message") && response.get("message").equals("Invalid username or password")) {
-            return ResponseEntity.status(401).body(response);  // Trả về lỗi 401 khi thông tin đăng nhập không đúng
+            return ResponseEntity.status(401).body(response);
         }
 
         if (response.containsKey("message") && response.get("message").equals("User not found")) {
-            return ResponseEntity.status(404).body(response);  // Trả về lỗi 404 khi người dùng không tồn tại
+            return ResponseEntity.status(404).body(response);
         }
 
-        // Trả về thông báo thành công cùng với token trong message
         return ResponseEntity.ok(response);
     }
-
-
-
-
 }
